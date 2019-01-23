@@ -8,8 +8,8 @@ var Modelo = function() {
   //inicializacion de eventos
   this.preguntaAgregada = new Evento(this);
   this.preguntaBorrada = new Evento(this);
-  this.preguntaEditada = new Evento(this);
   this.votoSumado = new Evento(this);
+  this.preguntaEditada = new Evento(this);
   this.preguntasBorradas = new Evento(this);
 };
 
@@ -45,36 +45,48 @@ Modelo.prototype = {
     this.guardar();
     this.preguntaAgregada.notificar();
   },
-
   borrarPregunta: function(id) {
-    var index = this.preguntas.indexOf(id);
-    this.preguntas.splice(index, 1);
+    var indiceRemover;
+    this.preguntas.forEach(function(pregunta, index) {
+      if (pregunta.id == id) {
+        indiceRemover = index;
+      }
+    });
+    this.preguntas.splice(indiceRemover, 1);
     this.guardar();
     this.preguntaBorrada.notificar();
   },
-
-  editarPregunta: function(id, nuevoTexto) {
-    var preguntaAEditar;
+  sumarVoto: function(nombrePregunta, respuesta) {
+    var indiceSumar;
     this.preguntas.forEach(function(pregunta, index) {
-      if (pregunta.id == id) {
-        preguntaAEditar = index;
+      if (pregunta.textoPregunta == nombrePregunta) {
+        indiceSumar = index;
       }
     });
-    this.preguntas[preguntaAEditar].textoPregunta = nuevoTexto;
+    this.preguntas[indiceSumar].cantidadPorRespuesta.map(function(opciones) {
+      if (opciones.textoRespuesta == respuesta) {
+        opciones.cantidadPorRespuesta++;
+      }
+    });
+    this.guardar();
+    this.votoSumado.notificar();
+  },
+  editarPregunta: function(id, contenidoEditado) {
+    var indiceEditar;
+    this.preguntas.forEach(function(pregunta, index) {
+      if (pregunta.id == id) {
+        indiceEditar = index;
+      }
+    });
+    this.preguntas[indiceEditar].textoPregunta = contenidoEditado;
     this.guardar();
     this.preguntaEditada.notificar();
   },
-
-  borrarTodo: function() {
+  borrarTodas: function() {
     this.preguntas = [];
     this.guardar();
     this.preguntasBorradas.notificar();
   },
-
-  //falta sumar voto
-  //falta agregar respuesta
-  //no anda local storage
-
   //se guardan las preguntas
   guardar: function() {
     localStorage.setItem("preguntas", JSON.stringify(this.preguntas));

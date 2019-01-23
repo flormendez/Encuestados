@@ -26,7 +26,6 @@ VistaAdministrador.prototype = {
   //lista
   inicializar: function() {
     //llamar a los metodos para reconstruir la lista, configurar botones y validar formularios
-
     this.reconstruirLista();
     this.configuracionDeBotones();
     validacionDeFormulario();
@@ -34,13 +33,13 @@ VistaAdministrador.prototype = {
 
   construirElementoPregunta: function(pregunta) {
     var contexto = this;
-    //completar
-    //asignar a nuevoitem un elemento li con clase "list-group-item", id "pregunta.id" y texto "pregunta.textoPregunta"
     var nuevoItem = $(document.createElement("li")).attr({
       class: "list-group-item",
       id: pregunta.id,
       texto: pregunta.textoPregunta
     });
+    //completar
+    //asignar a nuevoitem un elemento li con clase "list-group-item", id "pregunta.id" y texto "pregunta.textoPregunta"
     var interiorItem = $(".d-flex");
     var titulo = interiorItem.find("h5");
     titulo.text(pregunta.textoPregunta);
@@ -72,31 +71,29 @@ VistaAdministrador.prototype = {
       var respuestas = [];
 
       $('[name="option[]"]').each(function() {
-        //completar
         respuestas.push({
           textoRespuesta: $(this).val(),
           cantidadPorRespuesta: 0
         });
       });
-      //respuestas.splice(respuestas.length - 1)
+      respuestas.splice(respuestas.length - 1);
       contexto.limpiarFormulario();
       contexto.controlador.agregarPregunta(value, respuestas);
     });
     //asociar el resto de los botones a eventos
-    e.botonBorrarPregunta.click(function() {
+    e.botonBorrarPregunta.click(function(pregunta) {
       var id = parseInt($(".list-group-item.active").attr("id"));
       contexto.controlador.borrarPregunta(id);
     });
     e.botonEditarPregunta.click(function() {
-      var nuevoTexto = prompt("Editar pregunta");
+      var textoEditado = prompt("Ingrese nueva pregunta: ");
       var id = parseInt($(".list-group-item.active").attr("id"));
-      contexto.controlador.editarPregunta(id, nuevoTexto);
+      contexto.controlador.editarPregunta(id, textoEditado);
     });
     e.borrarTodo.click(function() {
-      contexto.controlador.borrarTodo();
+      contexto.controlador.borrarTodas();
     });
   },
-
   limpiarFormulario: function() {
     $(".form-group.answer.has-feedback.has-success").remove();
   }

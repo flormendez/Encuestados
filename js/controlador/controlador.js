@@ -1,9 +1,6 @@
 /*
  * Controlador
  */
-
- //debería validar los datos para que los incorrectos ni lleguen al modelo. Hacer función controlar Datos? 
- 
 var Controlador = function(modelo) {
   this.modelo = modelo;
 };
@@ -12,20 +9,23 @@ Controlador.prototype = {
   agregarPregunta: function(pregunta, respuestas) {
     this.modelo.agregarPregunta(pregunta, respuestas);
   },
-
   borrarPregunta: function(id) {
     this.modelo.borrarPregunta(id);
   },
-
-  editarPregunta: function(id, nuevoTexto) {
-    this.modelo.editarPregunta(id, nuevoTexto);
+  editarPregunta: function(id, textoEditado) {
+    if (typeof id == "number" && typeof textoEditado == "string") {
+      this.modelo.editarPregunta(id, textoEditado);
+    }
   },
-
-  borrarTodo: function() {
-    this.modelo.borrarTodo();
+  borrarTodas: function() {
+    this.modelo.borrarTodas();
   },
-
-  agregarVoto: function(nombrePregunta, respuestaSeleccionada){
-    this.modelo.sumarVoto(nombrePregunta, respuestaSeleccionada);
+  agregarVoto: function(nombrePregunta, respuestaSeleccionada) {
+    if (
+      typeof nombrePregunta == "string" &&
+      typeof respuestaSeleccionada == "string"
+    ) {
+      modelo.sumarVoto(nombrePregunta, respuestaSeleccionada);
+    }
   }
 };
