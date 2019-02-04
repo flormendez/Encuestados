@@ -63,8 +63,6 @@ VistaUsuario.prototype = {
     var contexto = this;
     var preguntas = this.modelo.preguntas;
     preguntas.forEach(function(clave) {
-      //completar
-      //agregar a listaPreguntas un elemento div con valor "clave.textoPregunta", texto "clave.textoPregunta", id "clave.id"
       listaPreguntas.append(
         $(document.createElement("div"))
           .attr({ value: clave.textoPregunta, id: clave.id })
@@ -75,7 +73,6 @@ VistaUsuario.prototype = {
     });
   },
 
-  //muestra respuestas
   mostrarRespuestas: function(listaPreguntas, respuestas, clave) {
     respuestas.forEach(function(elemento) {
       listaPreguntas.append(
